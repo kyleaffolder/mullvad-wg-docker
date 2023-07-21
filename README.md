@@ -191,8 +191,5 @@ WireGuard's behavior may change in the future. For this reason, it's recommended
 The available tags are listed [here](https://github.com/kyleaffolder/mullvad-wg-docker/tags).
 
 <!-- Footnotes -->
-[^1]: Prefixed values can be found within your Mullvad VPN account. 
-  For example, specifying `us-chi` will include all US Chicago-based Mullvad server endpoints.
-  As a second example, specifying `se` will select all Mullvad servers located in Sweden.
-  As a final example, specifying `us-chi,se` will in-turn select all servers in both Chicago, USA and Sweden.
+[^1]: Prefixed values can be found within your Mullvad VPN account. For example, specifying `us-chi` will include all US Chicago-based Mullvad server endpoints. As a second example, specifying `se` will select all Mullvad servers located in Sweden. As a final example, specifying `us-chi,se` will in-turn select all servers in both Chicago, USA and Sweden.
 [^2]: If you would like to specify multiple subnets, please separate each IP/Range by comma.
