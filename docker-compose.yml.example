@@ -1,21 +1,21 @@
+version: "3"
+
 services:
   vpn:
-    image: n1ghtm4r3x/mullvad-docker
+    image: kyleaffolder/mullvad-wg-docker
     container_name: vpn
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
     environment:
-      - TZ=Europe/Stockholm # Set timezone
-      - ACCOUNT= #Add your mullvad account number without spaces
-      - ACCOUNT= # Add your mullvad account number without spaces
-      - COUNTRY= # Choose the country you would like to use, Default is se (Sweden)
-      - LOCAL_SUBNET=192.168.1.0/24 # Add your local subnet
-    volumes:
-      - ./wg:/etc/wireguard # Set this to where you would like to save the wireguard config files
-      - /lib/modules:/lib/modules:ro
+      - ACCOUNT=1234567890123456
+      - PRIVATE_KEY=ZjFh6O7479S177JV8ZCyZM6N5XfqOJAyFy8AxLhdjyp=
+      - SERVER_LOCATION=se
+      - LOCAL_SUBNETS=10.1.0.0/16,10.2.0.0/16,10.3.0.0/16
+    # volumes:
+    #   - /lib/modules:/lib/modules:ro
     ports:
-      - 8080:8080 # Example for linuxserver qbittorrent
+      - 8080:8080 # example for LinuxServer qbittorrent
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
       - net.ipv6.conf.all.disable_ipv6=0

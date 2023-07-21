@@ -1,0 +1,7 @@
+*.code-workspace
+.git
+.gitignore
+.github
+build.sh
+docker-compose.yml.example
+README.md

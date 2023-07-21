@@ -39,7 +39,7 @@ done <<<"$FIELDS"
 
 shopt -s nocasematch
 for CODE in "${SERVER_CODES[@]}"; do
-	CONFIGURATION_FILE="/etc/wireguard/mullvad-$CODE.conf"
+	CONFIGURATION_FILE="/etc/wireguard/conf/mullvad/$CODE.conf"
 	[[ -f $CONFIGURATION_FILE ]] || continue
 	while read -r line; do
 		[[ $line =~ ^PrivateKey\ *=\ *([a-zA-Z0-9+/]{43}=)\ *$ ]] && PRIVATE_KEY="${BASH_REMATCH[1]}" && break
@@ -54,16 +54,16 @@ if [[ -z $PRIVATE_KEY ]]; then
 fi
 
 echo "[+] Contacting Mullvad API."
-RESPONSE="$(curl -sSL https://api.mullvad.net/wg/ -d account="$ACCOUNT" --data-urlencode pubkey="$(wg pubkey <<<"$PRIVATE_KEY")")" || die "Could not talk to Mullvad API."
+RESPONSE="$(curl -sSL https://api.mullvad.net/wg -d account="$ACCOUNT" --data-urlencode pubkey="$(wg pubkey <<<"$PRIVATE_KEY")")" || die "Could not talk to Mullvad API."
 [[ $RESPONSE =~ ^[0-9a-f:/.,]+$ ]] || die "$RESPONSE"
 ADDRESS="$RESPONSE"
-DNS="193.138.218.74"
+DNS="10.64.0.1"
 
 echo "[+] Writing WriteGuard configuration files."
 for CODE in "${SERVER_CODES[@]}"; do
-	CONFIGURATION_FILE="/etc/wireguard/mullvad-$CODE.conf"
+	CONFIGURATION_FILE="/etc/wireguard/conf/mullvad/$CODE.conf"
 	umask 077
-	mkdir -p /etc/wireguard/
+	mkdir -p /etc/wireguard/conf/mullvad/
 	rm -f "$CONFIGURATION_FILE.tmp"
 	cat > "$CONFIGURATION_FILE.tmp" <<-_EOF
 		[Interface]
@@ -79,10 +79,6 @@ for CODE in "${SERVER_CODES[@]}"; do
 	mv "$CONFIGURATION_FILE.tmp" "$CONFIGURATION_FILE"
 done
 
-echo "[+] Success. The following commands may be run for connecting to Mullvad:"
-for CODE in "${SERVER_CODES[@]}"; do
-	echo "- ${SERVER_LOCATIONS["$CODE"]}:"
-	echo "  \$ wg-quick up mullvad-$CODE"
-done
+echo "[+] Success."
 
 echo "Please wait up to 60 seconds for your public key to be added to the servers."
