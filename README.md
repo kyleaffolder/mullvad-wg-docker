@@ -1,4 +1,4 @@
-# [mullvad-wg-docker](https://github.com/kyleaffolder/mullvad-wg-docker)
+# [kyleaffolder/mullvad-wg-docker](https://github.com/kyleaffolder/mullvad-wg-docker)
 
 This is a simple Docker image to run a WireGuard client for the Mullvad VPN service. It is based on their configuration script which uses their API to generate configs for WireGuard.
 
