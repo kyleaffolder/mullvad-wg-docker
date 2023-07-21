@@ -36,16 +36,10 @@ services:
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
       # You may need to uncomment one or more of the following lines if you receive IPv6 related errors in the log and a connection cannot be established
-      # net.ipv6.conf.all.disable_ipv6: 0
+      net.ipv6.conf.all.disable_ipv6: 0
       # net.ipv6.conf.default.disable_ipv6: 0
       # net.ipv6.conf.lo.disable_ipv6: 0
     restart: unless-stopped
-    # healthcheck:
-    #   test: wget --no-verbose --tries=1 --spider http://localhost:32400/web || exit 1
-    #   interval: 5m
-    #   timeout: 10s
-    #   retries: 1
-    #   start_period: 20s
 
   curl:
     image: appropriate/curl
@@ -114,8 +108,8 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-v /lib/modules` | _Optional_ - Host kernel modules for situations where they're not already loaded. |
 | `--sysctl net.ipv4.conf.all.src_valid_mark=1` | **Required** |
 | _`--sysctl net.ipv6.conf.all.disable_ipv6=0`_ | _Optional - May be necessary if you receive IPv6 related errors in the log and a connection cannot be established_ |
-<!-- | _`--sysctl net.ipv6.conf.default.disable_ipv6=0`_ | _Optional_ - | -->
-<!-- | _`--sysctl net.ipv6.conf.lo.disable_ipv6=0`_ | _Optional_ - | -->
+<!-- | _`--sysctl net.ipv6.conf.default.disable_ipv6=0`_ | _Optional_ | -->
+<!-- | _`--sysctl net.ipv6.conf.lo.disable_ipv6=0`_ | _Optional_ | -->
 
 ## Environment variables from files (Docker secrets)
 
@@ -198,7 +192,7 @@ The available tags are listed [here](https://github.com/kyleaffolder/mullvad-wg-
 
 <!-- Footnotes -->
 [^1]: Prefixed values can be found within your Mullvad VPN account. 
-  - For example, specifying `us-chi` will include all US Chicago-based Mullvad server endpoints.
-  - As a second example, specifying `se` will select all Mullvad servers located in Sweden.
-  - As a final example, specifying `us-chi,se` will in-turn select all servers in both Chicago, USA and Sweden.
+  For example, specifying `us-chi` will include all US Chicago-based Mullvad server endpoints.
+  As a second example, specifying `se` will select all Mullvad servers located in Sweden.
+  As a final example, specifying `us-chi,se` will in-turn select all servers in both Chicago, USA and Sweden.
 [^2]: If you would like to specify multiple subnets, please separate each IP/Range by comma.
