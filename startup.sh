@@ -26,8 +26,7 @@ fi
 
 configs=$(find /etc/wireguard/conf/mullvad -type f -printf "%f\n")
 if [[ -z "$configs" ]]; then
-  echo "No configuration files found in /etc/wireguard/conf/mullvad" >&2
-  echo "Generating Mullvad WireGuard configuration files..." >&2
+  echo -e "No configuration files found in /etc/wireguard/conf/mullvad\nGenerating Mullvad WireGuard configuration files...\n" >&2
   # bash /VPN/mullvad-wg.sh
   source /VPN/mullvad-wg.sh
 fi
@@ -49,7 +48,7 @@ fi
 
 shopt -s nullglob
 for i in "${patterns[@]}"; do
-  files+=($i*.conf)
+  files+=(/etc/wireguard/conf/mullvad/$i*.conf)
 done
 shopt -u nullglob
 # printf '%s\n' "${files[@]}"
@@ -61,11 +60,13 @@ fi
 
 # Randomly select a WireGuard config file from available Mullvad configs (will take into account if specific locations are passed via `SERVER_LOCATION` env variable)
 RANDOM_CONFIG=${files[$RANDOM % ${#files[@]}]}
-echo "Selected WireGuard configuration: $RANDOM_CONFIG"
-RANDOM_SERVER="$(echo "$RANDOM_CONFIG" | sed -e 's/.conf//g')"
+echo -e "Selected WireGuard configuration: $RANDOM_CONFIG\n"
+RANDOM_SERVER="$(echo "$RANDOM_CONFIG" | sed -e 's/\/etc\/wireguard\/conf\/mullvad\///g' -e 's/.conf//g')"
 echo "WireGuard configuration updated to use the following Mullvad VPN exit location:"
-echo "  ${SERVER_LOCATIONS["$RANDOM_SERVER"]} ($RANDOM_SERVER)"
+echo -e "  ${SERVER_LOCATIONS["$RANDOM_SERVER"]} ($RANDOM_SERVER)\n"
 VPN=$RANDOM_SERVER
+
+unset SERVER_LOCATIONS
 
 if [[ "$(cat /proc/sys/net/ipv4/conf/all/src_valid_mark)" != "1" ]]; then
   echo "sysctl net.ipv4.conf.all.src_valid_mark=1 is not set" >&2

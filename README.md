@@ -25,7 +25,7 @@ version: "3"
 services:
   wireguard:
     container_name: wireguard
-    image: ghcr.io/kyleaffolder/mullvad-wg-docker
+    image: ghcr.io/kyleaffolder/mullvad-wg
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -60,7 +60,7 @@ docker run --name wireguard \
   -e SERVER_LOCATION=se \
   --sysctl net.ipv4.conf.all.src_valid_mark=1 \
   # --sysctl net.ipv6.conf.all.disable_ipv6=0  # see below `Note` \
-  kyleaffolder/mullvad-wg-docker
+  kyleaffolder/mullvad-wg
 ```
 
 Afterwards, you can link other containers to this one:
@@ -78,12 +78,12 @@ _**Note:** You may need to add in one or more of the following options if you re
 
 ## Maintaining local access to attached services
 
-When routing via WireGuard from another container using the service option in docker, you might lose access to the containers webUI locally. To avoid this and allow traffic from your local network to access that service, specify the subnet(s)[^1] using the `LOCAL_SUBNETS` environment variable:
+When routing via WireGuard from another container using the service option in docker, you might lose access to the containers WebUI locally. To avoid this and allow traffic from your local network to access that service, specify the subnet(s)[^1] using the `LOCAL_SUBNETS` environment variable:
 
 ```bash
 docker run... \
   -e LOCAL_SUBNETS=10.1.0.0/16,10.2.0.0/16,10.3.0.0/16 \
-  kyleaffolder/mullvad-wg-docker
+  kyleaffolder/mullvad-wg
 ```
 
 Additionally, you may expose ports to allow your local network to access services linked to the WireGuard container:
@@ -92,7 +92,7 @@ Additionally, you may expose ports to allow your local network to access service
 # Expose port 80 from within the Docker container to port 8080 externally on the Docker host
 docker run...
   -p 8080:80 \
-  kyleaffolder/mullvad-wg-docker
+  kyleaffolder/mullvad-wg
 ```
 
 ## Parameters:
@@ -128,7 +128,7 @@ Will set the environment variable `ACCOUNT` based on the contents of the `/run/s
 - Shell access whilst the container is running: `docker exec -it wireguard /bin/bash`
 - To monitor the logs of the container in realtime: `docker logs -f wireguard`
 - Get container version number: `docker inspect -f '{{ index .Config.Labels "build_version" }}'`
-- Get WireGuard image version number: `docker inspect -f '{{ index .Config.Labels "build_version" }}' ghcr.io/kyleaffolder/mullvad-wg-docker:latest`
+- Get WireGuard image version number: `docker inspect -f '{{ index .Config.Labels "build_version" }}' ghcr.io/kyleaffolder/mullvad-wg:latest`
 
 ## Updating Info
 
@@ -144,7 +144,7 @@ Below are the instructions for updating this container:
 
 ### via Docker run
 
-- Update the image: `docker pull ghcr.io/kyleaffolder/mullvad-wg-docker`
+- Update the image: `docker pull ghcr.io/kyleaffolder/mullvad-wg`
 - Stop the running container: `docker stop wireguard`
 - Delete the container: `docker rm wireguard`
 - Recreate a new container with teh same docker run parameters as instructed above: `docker run...`
@@ -179,14 +179,14 @@ cd mullvad-wg-docker
 docker build \
   --no-cache \
   --pull \
-  -t ghcr.io/kyleaffolder/mullvad-wg-docker:latest .
+  -t ghcr.io/kyleaffolder/mullvad-wg:latest .
 ```
 
 ## Versions
 
 - **21.07.23:** - Initial release.
 
-WireGuard's behavior may change in the future. For this reason, it's recommended to specify an image tag when running this container, such as `kyleaffolder/mullvad-wg-docker:1.0`.
+WireGuard's behavior may change in the future. For this reason, it's recommended to specify an image tag when running this container, such as `kyleaffolder/mullvad-wg:1.0`.
 
 The available tags are listed [here](https://github.com/kyleaffolder/mullvad-wg-docker/tags).
 

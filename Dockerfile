@@ -6,7 +6,9 @@ LABEL org.opencontainers.image.licenses=MIT
 LABEL org.opencontainers.image.title="Mullvad VPN (WireGuard)"
 LABEL org.opencontainers.image.description="Docker image for connecting to Mullvad VPN via the WireGuard VPN protocol"
 
-RUN mkdir /VPN
+RUN \
+  mkdir /VPN && \
+  mkdir -p /etc/wireguard/conf/mullvad
 COPY . /VPN
 
 ## Quick build test

@@ -21,7 +21,7 @@ type curl >/dev/null || die "Please install curl and then try again."
 type jq >/dev/null || die "Please install jq and then try again."
 set -e
 
-echo "[+] Contacting Mullvad API for server locations."
+echo "[+] Contacting Mullvad API for server locations..."
 declare -A SERVER_ENDPOINTS
 declare -A SERVER_PUBLIC_KEYS
 declare -A SERVER_LOCATIONS
@@ -49,17 +49,17 @@ done
 shopt -u nocasematch
 
 if [[ -z $PRIVATE_KEY ]]; then
-	echo "[+] Generating new private key."
+	echo "[+] Generating new private key..."
 	PRIVATE_KEY="$(wg genkey)"
 fi
 
-echo "[+] Contacting Mullvad API."
+echo "[+] Contacting Mullvad API..."
 RESPONSE="$(curl -sSL https://api.mullvad.net/wg -d account="$ACCOUNT" --data-urlencode pubkey="$(wg pubkey <<<"$PRIVATE_KEY")")" || die "Could not talk to Mullvad API."
 [[ $RESPONSE =~ ^[0-9a-f:/.,]+$ ]] || die "$RESPONSE"
 ADDRESS="$RESPONSE"
 DNS="10.64.0.1"
 
-echo "[+] Writing WriteGuard configuration files."
+echo "[+] Writing WriteGuard configuration files..."
 for CODE in "${SERVER_CODES[@]}"; do
 	CONFIGURATION_FILE="/etc/wireguard/conf/mullvad/$CODE.conf"
 	umask 077
@@ -79,6 +79,8 @@ for CODE in "${SERVER_CODES[@]}"; do
 	mv "$CONFIGURATION_FILE.tmp" "$CONFIGURATION_FILE"
 done
 
-echo "[+] Success."
+echo "[+] Success!"
 
-echo "Please wait up to 60 seconds for your public key to be added to the servers."
+echo -e "\n(Please wait up to 60 seconds for your public key to be added to the servers.)"
+
+export SERVER_LOCATIONS

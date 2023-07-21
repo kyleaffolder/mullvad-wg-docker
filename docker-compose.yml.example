@@ -2,7 +2,7 @@ version: "3"
 
 services:
   vpn:
-    image: kyleaffolder/mullvad-wg-docker
+    image: kyleaffolder/mullvad-wg
     container_name: vpn
     cap_add:
       - NET_ADMIN
